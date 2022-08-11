@@ -1,0 +1,3 @@
+[submodule "external/3Dgan"]
+	path = external/3Dgan
+	url = https://github.com/svalleco/3Dgan.git
