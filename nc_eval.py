@@ -92,7 +92,7 @@ def benchmark(model):
     print(f"Acc: {avg_acc}, Lat {avg_latency}, Throughput: {avg_throughput}")
 
 
-def run_neural_compressor(model):
+def run_neural_compressor(model, output="models/int8"):
     #########################################
     # Load dataset into correct format
     #########################################
@@ -144,4 +144,4 @@ def run_neural_compressor(model):
 
     quantized_graph: tf.Graph = quantizer.fit()
 
-    quantized_graph.save("models/int8_model.pb")
+    quantized_graph.save(output)

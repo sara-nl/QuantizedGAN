@@ -18,9 +18,10 @@ def generate_random_input(nb_samples=10, latent_size=LATENT_SIZE):
 
 def run_model(model, n_samples=10, n_batch_samples=10):
     print(f"Processing {n_samples} samples on {type(model)}.")
-    start_time = datetime.datetime.now()
-
+    model([generate_random_input(nb_samples=n_batch_samples)])
     gen_input = generate_random_input(nb_samples=n_batch_samples)
+
+    start_time = datetime.datetime.now()
     for i in range(n_samples):
         model([gen_input])
 
