@@ -92,12 +92,12 @@ def benchmark(model):
     print(f"Acc: {avg_acc}, Lat {avg_latency}, Throughput: {avg_throughput}")
 
 
-def run_neural_compressor(model, output="models/int8"):
+def run_neural_compressor(model, output="models/int8", batch_size=32, dtype="int8"):
     #########################################
     # Load dataset into correct format
     #########################################
     dataset = []
-    for i in range(1, 9):
+    for i in range(1, 2):
         dataset_filename = f"dataset/EleEscan_RandomAngle_{i}_1.h5"
         data = GetDataAngle(dataset_filename)
         dataset.append(data)
@@ -130,18 +130,19 @@ def run_neural_compressor(model, output="models/int8"):
     #########################################
     # Set dataloader in NC quantizer
     #########################################
-    quantizer.calib_dataloader = common.DataLoader(train_dataset, batch_size=32)
-    quantizer.eval_dataloader = common.DataLoader(test_dataset, batch_size=32)
+    quantizer.calib_dataloader = common.DataLoader(train_dataset, batch_size=batch_size)
+    quantizer.eval_dataloader = common.DataLoader(test_dataset, batch_size=batch_size)
     quantizer.metric = common.Metric(partial(CustomMetric, xdist, ydist, zdist))
 
     #########################################
     # Set some specific tuning parameters
     #########################################
+    quantizer.cfg["quantization"]["dtype"] = dtype
     quantizer.cfg["tuning"]["accuracy_criterion"]["higher_is_better"] = False
+    # quantizer.cfg["tuning"]["tensorboard"] = True
 
     print("Using this quantization configuration:")
     pprint.pprint(quantizer.cfg)
-
     quantized_graph: tf.Graph = quantizer.fit()
 
     quantized_graph.save(output)

@@ -1,4 +1,7 @@
 import h5py
+import onnxruntime
+import tensorflow
+
 import GANutils as gan
 
 import datetime
@@ -18,12 +21,28 @@ def generate_random_input(nb_samples=10, latent_size=LATENT_SIZE):
 
 def run_model(model, n_samples=10, n_batch_samples=10):
     print(f"Processing {n_samples} samples on {type(model)}.")
-    model([generate_random_input(nb_samples=n_batch_samples)])
     gen_input = generate_random_input(nb_samples=n_batch_samples)
 
     start_time = datetime.datetime.now()
     for i in range(n_samples):
         model([gen_input])
+
+    tot_time = datetime.datetime.now() - start_time
+    print(
+        f"{n_samples * n_batch_samples} samples processed in {tot_time} ({(n_samples * n_batch_samples) / tot_time.total_seconds()} samples/s)")
+    return n_samples / tot_time.total_seconds()
+
+
+def run_model_openvino(session: onnxruntime.InferenceSession, n_samples=10, n_batch_samples=10):
+    tensor = generate_random_input(nb_samples=n_batch_samples).astype(np.single)
+
+    print(tensor.shape)
+
+    start_time = datetime.datetime.now()
+    for i in range(n_samples):
+        session.run(None, input_feed={
+            "input_1": tensor
+        })
 
     tot_time = datetime.datetime.now() - start_time
     print(
