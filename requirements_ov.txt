@@ -1,4 +1,0 @@
-opencv-python==4.5.5.64
-openvino==2022.1.0
-openvino-dev==2022.1.0
-openvino-telemetry==2022.1.1

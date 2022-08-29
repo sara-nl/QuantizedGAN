@@ -1,0 +1,4 @@
+intel-tensorflow-avx512 @ file:///gpfs/home5/duncank/QuantizedGAN/intel_tensorflow_avx512-2.10.0.202230-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+tqdm
+onnxruntime-openvino==1.11.0
+neural-compressor
