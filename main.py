@@ -48,6 +48,7 @@ def main():
     model_path = Path(args.model)
     default_model = tf.keras.models.load_model(model_path)
     default_model.summary()
+    default_model.get_layer(index=1).summary()
     # Perform quantization on model
     if args.nc:
         from nc_eval import run_neural_compressor

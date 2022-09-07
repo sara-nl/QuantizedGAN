@@ -66,10 +66,12 @@ def compute_distributions(model, train_dataset, save_distributions=True):
         predict = model(batch)
 
         x_avgs += [np.mean(predict, axis=(0, 1, 2, 4))]
-        y_avgs += [np.mean(predict, axis=(0, 1, 3, 4))]
-        z_avgs += [np.mean(predict, axis=(0, 2, 3, 4))]
         x_vars += [np.std(predict, axis=(0, 1, 2, 4))]
+
+        y_avgs += [np.mean(predict, axis=(0, 1, 3, 4))]
         y_vars += [np.std(predict, axis=(0, 1, 3, 4))]
+
+        z_avgs += [np.mean(predict, axis=(0, 2, 3, 4))]
         z_vars += [np.std(predict, axis=(0, 2, 3, 4))]
 
     x_avgs = np.array(x_avgs)

@@ -137,9 +137,15 @@ def run_neural_compressor(model, output="models/int8", batch_size=32, dtype="int
     #########################################
     # Set some specific tuning parameters
     #########################################
+    quantizer.cfg["model"]["framework"] = "inteltensorflow"
+
+    quantizer.cfg["quantization"]["recipes"]["first_conv_or_matmul_quantization"] = False
+    quantizer.cfg["quantization"]["recipes"]["scale_propagation_concat"] = False
+    quantizer.cfg["quantization"]["recipes"]["scale_propagation_max_pooling"] = False
+
     quantizer.cfg["quantization"]["dtype"] = dtype
+    quantizer.cfg["quantization"]["approach"] = "post_training_static_quant"
     quantizer.cfg["tuning"]["accuracy_criterion"]["higher_is_better"] = False
-    # quantizer.cfg["tuning"]["tensorboard"] = True
 
     print("Using this quantization configuration:")
     pprint.pprint(quantizer.cfg)
